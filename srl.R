@@ -18,3 +18,38 @@ test_set = subset(dataset, split == FALSE)
 # Fitting Simple Linear Regression to the Training SET
 regressor = lm(formula = Salary ~ YearsExperience, 
                data = training_set)
+
+# Predicting Test results
+y_pred = predict(regressor, newdata = test_set)
+
+# Visualizing the Test set results
+#install.packages('ggplot2')
+library(ggplot2)
+
+# plotting graph of Training SET
+ggplot() +
+  #first component observation point (real ones) of training set
+  geom_point(aes(x = training_set$YearsExperience, y = training_set$Salary),
+             colour = 'red') +
+  #regression line
+  geom_line(aes(x = training_set$YearsExperience, y = predict(regressor, newdata = training_set)),
+            colour = 'blue') +
+  ggtitle('Salary vs Experience (Training set)') +
+  xlab('Years of experience') + 
+  ylab('Salary')
+
+# plotting graph of Test Set
+ggplot() +
+  geom_point(aes(x = test_set$YearsExperience, y = test_set$Salary),
+             colour = 'red') +
+  # dont need to change, because regressor is already trainned in the training set
+  # 
+  geom_line(aes(x = training_set$YearsExperience, y = predict(regressor, newdata = training_set)),
+                color = 'blue') +
+  ggtitle('Salary vs Experience (Test set)') +
+  xlab('Years of Experience') +
+  ylab('Salary')
+              
+
+
+
